@@ -1,6 +1,6 @@
 // Define the AWS provider and region
 provider "aws" {
-  region = "ap-southeast-1"
+  region = "ap-south-1"
 }
 
 // Create the S3 bucket with public-read ACL
