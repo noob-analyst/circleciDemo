@@ -18,7 +18,6 @@ resource "aws_s3_bucket_policy" "circleciterraform_policy" {
       {
         Action =[
         "s3:GetObject",
-        "s3:PutBucketPolicy"
         ],
         Effect = "Allow",
         Resource = [
