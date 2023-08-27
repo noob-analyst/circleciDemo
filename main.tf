@@ -11,6 +11,32 @@ resource "aws_s3_bucket" "bucket" {
   }
 }
 
+
+// Define IAM policy document for public read access to index.html
+data "aws_iam_policy_document" "public_read_index_html" {
+  statement {
+    effect = "Allow"
+    principals {
+      type = "AWS"
+      identifiers = ["*"]
+    }
+
+    actions = ["s3:GetObject"]
+
+    resources = [
+      "${aws_s3_bucket.bucket.arn}/*"
+    ]
+  }
+}
+
+
+// Attach the public read policy to the bucket
+resource "aws_s3_bucket_policy" "bucket_policy" {
+  bucket = aws_s3_bucket.bucket.id
+  policy = data.aws_iam_policy_document.public_read_index_html.json
+}
+
+
 resource "aws_s3_bucket_ownership_controls" "bucket" {
   bucket = aws_s3_bucket.bucket.id
   rule {
@@ -45,3 +71,7 @@ resource "aws_s3_object" "index_html" {
   source = "index.html"  // This assumes index.html is in the root of your
   content_type = "text/html"
 }
+
+
+
+
