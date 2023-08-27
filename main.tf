@@ -17,12 +17,7 @@ resource "aws_s3_bucket_policy" "circleciterraform_policy" {
     Statement = [
       {
         Action =[
-        "s3:CreateBucket",
-        "s3:PutBucketPolicy",
         "s3:GetObject",
-        "s3:ListBucket",
-        "s3:ListAllMyBuckets",
-        "s3:PutObject",
         "s3:PutBucketPolicy"
         ],
         Effect = "Allow",
