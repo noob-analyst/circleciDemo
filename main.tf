@@ -4,7 +4,7 @@ provider "aws" {
 
 resource "aws_s3_bucket" "circleciterraform2" {
   bucket = "circleciterraform2" # Change to your unique bucket name
-
+  acl = "public-read"
   website {
     index_document = "index.html"
   }
@@ -17,7 +17,10 @@ resource "aws_s3_bucket_policy" "circleciterraform_policy" {
     Version = "2012-10-17",
     Statement = [
       {
-        Action = "*",
+        Action = [
+          "s3:GetObject",
+          "s3:PutBucketPolicy"
+        ],
         Effect = "Allow",
         Resource = [
           "arn:aws:s3:::circleciterraform2",
