@@ -12,9 +12,9 @@ jobs:
             export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
             sudo apt-get update 
             sudo apt-get install -y awscli
-      - run:
-          name: Install Terraform
-          command: curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+            curl -O https://releases.hashicorp.com/terraform/0.12.28/terraform_0.12.28_linux_amd64.zip            unzip terraform_0.12.28_linux_amd64.zip
+            unzip terraform_0.12.28_linux_amd64.zip
+            sudo mv terraform /usr/local/bin/
       - run:
           name: Upload to S3
           command: |
