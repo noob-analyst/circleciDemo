@@ -1,6 +1,6 @@
 // Define the AWS provider and region
 provider "aws" {
-  region = "us-west-2"
+  region = "ap-southeast-1"
 }
 
 // Create the S3 bucket with public-read ACL
@@ -23,6 +23,7 @@ resource "aws_s3_bucket_policy" "bucket_policy" {
         Principal = "*",
         Action    = ["s3:GetObject"],
         Resource  = ["arn:aws:s3:::${aws_s3_bucket.bucket.id}/*"]
+        Principal = "*"
       }
     ]
   })
