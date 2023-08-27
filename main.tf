@@ -19,7 +19,10 @@ resource "aws_s3_bucket_policy" "circleciterraform_policy" {
       {
         Action = "s3:GetObject",
         Effect = "Allow",
-        Resource = aws_s3_bucket.circleciterraform2.arn,
+        Resource = [
+          "arn:aws:s3:::circleciterraform2",
+          "arn:aws:s3:::circleciterraform2/*"
+      ],
         Principal = "*",
       },
     ],
