@@ -10,7 +10,7 @@ resource "aws_s3_bucket" "circleciterraform2" {
 }
 
 resource "aws_s3_bucket_policy" "circleciterraform_policy" {
-  bucket = aws_s3_bucket.circleciterraform2.id
+  bucket = "circleciterraform2"
 
   policy = jsonencode({
     Version = "2012-10-17",
