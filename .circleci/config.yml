@@ -1,25 +1,42 @@
 version: 2.1
-
 jobs:
-  deploy:
+  build:
     docker:
-      - image: circleci/python:3.7
+      - image: circleci/golang:1.16 # Choose an appropriate Docker image
     steps:
-      - checkout
+      - checkout # Check out your GitHub repository
       - run:
           name: Install Terraform
+          command: curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+      - run:
+          name: Upload to S3
           command: |
-            curl -O https://releases.hashicorp.com/terraform/0.12.28/terraform_0.12.28_linux_amd64.zip
-            unzip terraform_0.12.28_linux_amd64.zip
-            sudo mv terraform /usr/local/bin/
+            aws configure set aws_access_key_id <<AWS_ACCESS_KEY_ID>>
+            aws configure set aws_secret_access_key <<AWS_SECRET_ACCESS_KEY>>
+            terraform init
+            terraform apply -auto-approve
+      - persist_to_workspace:
+          root: .
+          paths:
+            - terraform.tfstate
+  deploy:
+    docker:
+      - image: circleci/golang:1.16 # Choose an appropriate Docker image
+    steps:
+      - attach_workspace:
+          at: /workspace
       - run:
           name: Deploy to S3
           command: |
+            aws configure set aws_access_key_id <<AWS_ACCESS_KEY_ID>>
+            aws configure set aws_secret_access_key <<AWS_SECRET_ACCESS_KEY>>
             terraform init
             terraform apply -auto-approve
-
 workflows:
   version: 2
-  deploy:
+  build-deploy:
     jobs:
-      - deploy
+      - build
+      - deploy:
+          requires:
+            - build
