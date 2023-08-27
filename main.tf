@@ -1,31 +1,29 @@
+// Define the AWS provider and region
 provider "aws" {
-  region = "ap-southeast-1" # Change to your desired AWS region
+  region = "us-west-2"
 }
 
-resource "aws_s3_bucket" "circleciterraform2" {
-  bucket = "circleciterraform2" # Change to your unique bucket name
+// Create the S3 bucket with public-read ACL
+resource "aws_s3_bucket" "bucket" {
+  bucket = "circleciterraform2"
   website {
     index_document = "index.html"
   }
 }
 
-resource "aws_s3_bucket_policy" "circleciterraform_policy" {
-  bucket = "circleciterraform2"
-
+// Add a policy to the bucket to allow public access
+resource "aws_s3_bucket_policy" "bucket_policy" {
+  bucket = aws_s3_bucket.bucket.id
   policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
       {
-        Action =[
-        "s3:GetObject",
-        ],
-        Effect = "Allow",
-        Resource = [
-          "arn:aws:s3:::circleciterraform2",
-          "arn:aws:s3:::circleciterraform2/*"
-      ],
+        Sid       = "PublicReadGetObject",
+        Effect    = "Allow",
         Principal = "*",
-      },
-    ],
+        Action    = ["s3:GetObject"],
+        Resource  = ["arn:aws:s3:::${aws_s3_bucket.bucket.id}/*"]
+      }
+    ]
   })
 }
