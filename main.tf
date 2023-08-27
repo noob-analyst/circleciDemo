@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 resource "aws_s3_bucket" "circleciterraform" {
-  bucket = "circleciterraform" # Change to your unique bucket name
+  bucket = "circleciterraform2" # Change to your unique bucket name
   acl    = "public-read"
 
   website {
