@@ -6,13 +6,18 @@ jobs:
     steps:
       - checkout # Check out your GitHub repository
       - run:
+          name: Export AWS Environment Variables
+          command: |
+            export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+            export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+      - run:
           name: Install Terraform
           command: curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
       - run:
           name: Upload to S3
           command: |
-            aws configure set aws_access_key_id <<AWS_ACCESS_KEY_ID>>
-            aws configure set aws_secret_access_key <<AWS_SECRET_ACCESS_KEY>>
+            aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+            aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
             terraform init
             terraform apply -auto-approve
       - persist_to_workspace:
@@ -26,10 +31,15 @@ jobs:
       - attach_workspace:
           at: /workspace
       - run:
+          name: Export AWS Environment Variables
+          command: |
+            export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+            export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+      - run:
           name: Deploy to S3
           command: |
-            aws configure set aws_access_key_id <<AWS_ACCESS_KEY_ID>>
-            aws configure set aws_secret_access_key <<AWS_SECRET_ACCESS_KEY>>
+            aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+            aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
             terraform init
             terraform apply -auto-approve
 workflows:
