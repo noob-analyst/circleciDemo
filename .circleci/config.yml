@@ -10,8 +10,8 @@ jobs:
       - run:
           name: Install Terraform
           command: |
-            curl -O https://releases.hashicorp.com/terraform/0.12.28/terraform_0.12.28_linux_amd64.zip
-            unzip terraform_0.12.28_linux_amd64.zip
+            curl -O https://releases.hashicorp.com/terraform/1.5.6/terraform_1.5.6_linux_amd64.zip
+            unzip terraform_1.5.6_linux_amd64.zip
             sudo mv terraform /usr/local/bin/
       - run:
           name: Deploy to S3
