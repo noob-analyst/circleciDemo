@@ -1,0 +1,25 @@
+version: 2.1
+
+jobs:
+  deploy:
+    docker:
+      - image: circleci/python:3.7
+    steps:
+      - checkout
+      - run:
+          name: Install Terraform
+          command: |
+            curl -O https://releases.hashicorp.com/terraform/0.12.28/terraform_0.12.28_linux_amd64.zip
+            unzip terraform_0.12.28_linux_amd64.zip
+            sudo mv terraform /usr/local/bin/
+      - run:
+          name: Deploy to S3
+          command: |
+            terraform init
+            terraform apply -auto-approve
+
+workflows:
+  version: 2
+  deploy:
+    jobs:
+      - deploy
